@@ -17,16 +17,14 @@
     #downloadBtn {
         padding: 10px 20px;
         font-size: 16px;
-        cursor: pointer;
         background-color: #007bff;
         color: white;
-        border: none;
         border-radius: 5px;
     }
 </style>
 </head>
 <body>
-    <h1>Image Downloader 2 </h1>
+    <h1>Image Downloader</h1>
     <input type="text" id="urlInput" placeholder="Enter URL of the page containing the image">
     <button id="downloadBtn">Download Image</button>
 
@@ -35,4 +33,35 @@
             var url = document.getElementById('urlInput').value;
             if (!url) {
                 alert('Please enter a URL');
-                
+                return;
+            }
+
+            fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                var parser = new DOMParser();
+                var htmlDoc = parser.parseFromString(data, 'text/html');
+                var imgSrc = htmlDoc.querySelector('img').src;
+
+                // Create a link element
+                var a = document.createElement('a');
+                a.href = imgSrc;
+                a.download = 'image.jpg';
+
+                // Append the link to the body
+                document.body.appendChild(a);
+
+                // Programmatically click the link to trigger download
+                a.click();
+
+                // Remove the link from the DOM
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Error fetching the URL:', error);
+                alert('Error fetching the URL. Please make sure it is correct and accessible.');
+            });
+        });
+    </script>
+</body>
+</html>
