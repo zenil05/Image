@@ -5,65 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Image Downloader</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-  }
-  .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-  }
-  input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #0056b3;
-  }
+    body {
+        font-family: Arial, sans-serif;
+    }
+    #urlInput {
+        width: 80%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+    }
+    #downloadBtn {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>Image Downloader</h1>
-  <input type="text" id="urlInput" placeholder="Enter image URL">
-  <br>
-  <button onclick="downloadImage()">Download Image</button>
-  <div id="errorMessage" style="color: red; margin-top: 10px;"></div>
-</div>
+    <h1>Image Downloader</h1>
+    <input type="text" id="urlInput" placeholder="Enter URL of the page containing the image">
+    <button id="downloadBtn">Download Image</button>
 
-<script>
-  function downloadImage() {
-    var url = document.getElementById('urlInput').value;
-    var image = new Image();
-    image.crossOrigin = "Anonymous"; // To avoid CORS issues
-    image.onload = function() {
-      var canvas = document.createElement('canvas');
-      canvas.width = this.width;
-      canvas.height = this.height;
-      var ctx = canvas.getContext('2d');
-      ctx.drawImage(this, 0, 0);
-      var dataURL = canvas.toDataURL('image/png');
-      var a = document.createElement('a');
-      a.href = dataURL;
-      a.download = 'download.png';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
-    image.onerror = function() {
-      document.getElementById('errorMessage').innerText = 'Failed to load image from the provided URL';
-    };
-    image.src = url;
-  }
-</script>
-</body>
-</html>
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            var url = document.getElementById('urlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                
