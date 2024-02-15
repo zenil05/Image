@@ -15,60 +15,62 @@
         font-size: 16px;
     }
 
+    }
 </style>
 </head>
 <body>
     <h1>Image Downloader</h1>
     <input type="text" id="urlInput" placeholder="Enter URL of the page containing the images">
-    <button id="downloadBtn">Download Images 2</button>
+    <button id="downloadBtn">Download Images Now</button>
 
     <script>
-document.getElementById('downloadBtn').addEventListener('click', function() {
-    var url = document.getElementById('urlInput').value;
-    if (!url) {
-        alert('Please enter a URL');
-        return;
-    }
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            var url = document.getElementById('urlInput').value;
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
 
-    fetch(url, {
-        mode: 'no-cors'
-    })
-    .then(response => response.text())
-    .then(data => {
-        var parser = new DOMParser();
-        var htmlDoc = parser.parseFromString(data, 'text/html');
-        var images = htmlDoc.querySelectorAll('img');
-        
-        if (images.length === 0) {
-            alert('No images found on the page');
-            return;
-        }
+            fetch(url, {
+    mode: 'no-cors'
 
-        images.forEach(function(img, index) {
-            var imgSrc = img.src;
-            var fileName = 'image_' + (index + 1) + '.jpg';
-            
-            // Create a link element
-            var a = document.createElement('a');
-            a.href = imgSrc;
-            a.download = fileName;
+                })
 
-            // Append the link to the body
-            document.body.appendChild(a);
+            .then(response => response.text())
+            .then(data => {
+                var parser = new DOMParser();
+                var htmlDoc = parser.parseFromString(data, 'text/html');
+                var images = htmlDoc.querySelectorAll('img');
+                
+                if (images.length === 0) {
+                    alert('No images found on the page');
+                    return;
+                }
 
-            // Programmatically click the link to trigger download
-            a.click();
+                images.forEach(function(img, index) {
+                    var imgSrc = img.src;
+                    var fileName = 'image_' + (index + 1) + '.jpg';
+                    
+                    // Create a link element
+                    var a = document.createElement('a');
+                    a.href = imgSrc;
+                    a.download = fileName;
 
-            // Remove the link from the DOM
-            document.body.removeChild(a);
+                    // Append the link to the body
+                    document.body.appendChild(a);
+
+                    // Programmatically click the link to trigger download
+                    a.click();
+
+                    // Remove the link from the DOM
+                    document.body.removeChild(a);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching the URL:', error);
+                alert('Error fetching the URL. Please make sure it is correct and accessible.');
+            });
         });
-    })
-    .catch(error => {
-        console.error('Error fetching the URL:', error);
-        alert('Error fetching the URL. Please make sure it is correct and accessible.');
-    });
-});
-
     </script>
 </body>
 </html>
