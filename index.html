@@ -38,7 +38,7 @@
             .then(data => {
                 var parser = new DOMParser();
                 var htmlDoc = parser.parseFromString(data, 'text/html');
-                var imgSrc = htmlDoc.querySelector('img').src;
+                var imgSrc = htmlDoc.querySelector('.img-responsive').src;
 
                 // Create a link element
                 var a = document.createElement('a');
